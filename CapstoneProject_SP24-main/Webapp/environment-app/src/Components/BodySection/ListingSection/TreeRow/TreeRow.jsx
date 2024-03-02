@@ -1,17 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-// import treeApi from '../../../../Api/treeApi';
-import './style.scss'
 import axios from 'axios';
-import { BiAlignLeft, BiSolidEdit } from "react-icons/bi";
-import Delete from '../../../Modals/ModelDelete';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import ClipLoader from "react-spinners/ClipLoader";
+import { BiSolidEdit } from "react-icons/bi";
 import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
+import ClipLoader from "react-spinners/ClipLoader";
+import Delete from '../../../Modals/ModelDelete';
+import './treeRow.scss';
 
 function TreeRow() {
-  const [totalTree, setTotalTree] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [currentPages, setCurrentPages] = useState(1);
   const [data, setData] = useState([]);
 
@@ -87,7 +84,7 @@ function TreeRow() {
 
                     </td>
                     <td>
-                      <Link to="/detail-tree">
+                      <Link to={`/detail-tree/${d.treeCode}`}>
                         <button type="button" class="btn btn-click">{d.treeCode}</button>
                       </Link>
                     </td>
@@ -125,7 +122,7 @@ function TreeRow() {
           activeClassName='active'
           renderOnZeroPageCount={null}
         />
-      </div>
+      </div >
   )
 }
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import img from '../../../Assets/imgcondau4.jpg';
 
 import './detailTree.scss';
@@ -23,7 +23,7 @@ function DetailTree() {
 
     const { state } = useLocation();
     const navigate = useNavigate();
-
+    const { treeCode } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +35,8 @@ function DetailTree() {
                 console.log(error)
             }
         }
-        fetchData()}, []);
+        fetchData()
+    }, []);
 
     // console.log('data["LoaiCay"]: ' + data["LoaiCay"])
     return (
