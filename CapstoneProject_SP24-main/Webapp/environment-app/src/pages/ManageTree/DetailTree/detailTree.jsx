@@ -1,25 +1,20 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import Delete from '../../../Components/Modals/ModelDelete';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
+import { useLocation, useNavigate } from 'react-router-dom';
 import img from '../../../Assets/imgcondau4.jpg';
-import Row from 'react-bootstrap/Row';
 
-import './detailTree.scss'
+import './detailTree.scss';
 
 const detailTitle = {
-    "Quan": "Quận",
-    "DuongId": "Tuyến dường",
-    "GiongCay": "Giống cây",
-    "LoaiCay": "Loại Cây",
-    "D-Cay": "Đường kính thân",
-    "TanLa": "Tán lá",
-    "ThoiDiemCatTiaGanNhat": "Thời điểm cắt tỉa gần nhất",
-    "ThoiDiemTrong": "Thời điểm trồng",
+    "streetId": "Tuyến dường",
+    "cultivarId": "Giống cây",
+    "bodyDiameter": "Đường kính thân",
+    "leafLength": "Tán lá",
+    "cutTime": "Thời điểm cắt tỉa gần nhất",
+    "plantTime": "Thời điểm trồng",
+    "note": "Ghi chú",
+    "isExist": "Trạng thái"
 }
 
 function DetailTree() {
@@ -33,56 +28,59 @@ function DetailTree() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`http://localhost:8001/tree/`);
+                const res = await axios.get(`http://vesinhdanang.xyz/AmbatuGraduate_API/api/tree/GetByTreeCode/${treeCode}`);
                 const data = await res.data;
-                setData(data[0]);
+                setData(data);
             } catch (error) {
                 console.log(error)
             }
         }
-        fetchData();
+        fetchData()}, []);
 
-        return
-
-        // axios.get(http://localhost:8001/tree)
-        //     .then(res => {
-        //         console.log(res.data)
-        //         setData(res.data)
-        //     })
-        //     .catch(err => console.log(err))
-    }, [])
+    // console.log('data["LoaiCay"]: ' + data["LoaiCay"])
     return (
         <section className='detailTree'>
             <div className='container'>
-                    {
-                        data && Object.keys(data).slice(0, 1).map((property, index) => {
-                            if (property !== "MaCay" && property !== "TrangThai")
-                                console.log("property >>>>>>>>>>>>", property)
-                            return (
-                                <div key={index} class="card mb-3" >
-                                    <div class="row g-0">
-                                        <div class="col-md-6">
-                                            <img src={img} alt="img" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="card-body">
-                                                <h6 className='card-text'>Quận: <span>{data["Quan"]}</span></h6>
-                                                <h6 className='card-text'>Tuyến đường: <span>{data["DuongId"]}</span></h6>
-                                                <h6 className='card-text'>Loại cây: <span>{data["LoaiCay"]}</span></h6>
-                                                <h6 className='card-text'>Giống cây: <span>{data["GiongCay"]}</span></h6>
-                                                <h6 className='card-text'>Đường kính thân: <span>{data["D-Cay"]}</span></h6>
-                                                <h6 className='card-text'>Tán lá: <span>{data["TanLa"]}</span></h6>
-                                                <h6 className='card-text'>Thời điểm cắt tỉa gần nhất: <span>{data["ThoiDiemCatTiaGanNhat"]}</span></h6>
-                                                <h6 className='card-text'>Thời điểm trồng: <span>{data["ThoiDiemTrong"]}</span></h6>
-                                                <h6 className='card-text'>Ghi chú: <span></span></h6>
+                {
+                    data && Object.keys(data).slice(0, 1).map((property, index) => {
+                        if (property !== data.treeCode && property !== data.isExist)
+                            console.log("property >>>>>>>>>>>>", property)
+                        return (
+                            <div key={index} class="card mb-3" >
+                                <div class="row g-0">
+                                    <div class="col-md-6">
+                                        <img src={img} alt="img" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div className='flex flex-col  gap-5 items-center justify-between p-5'>
+                                            <div className='grid gap-3 '>
+                                                <h6 className='font-bold text-lg'>Tuyến đường:</h6>
+                                                <h6 className='font-bold text-lg'>Giống cây:</h6>
+                                                <h6 className='font-bold text-lg'>Đường kính thân:</h6>
+                                                <h6 className='font-bold text-lg'>Tán lá:</h6>
+                                                <h6 className='font-bold text-lg'>Thời điểm cắt tỉa gần nhất:</h6>
+                                                <h6 className='font-bold text-lg'>Thời điểm trồng:</h6>
+                                                <h6 className='font-bold text-lg'>Ghi chú:</h6>
+                                            </div>
+
+                                            <div className='grid gap-3 items-end'>
+                                                <h6 className='font-bold text-lg'>{data["streetId"] ? data["streetId"] : 'Tuyến đường'}</h6>
+                                                <h6 className='font-bold text-lg'>{data["GiongCay"] ? data["GiongCay"] : 'Giống cây'}</h6>
+                                                <h6 className='font-bold text-lg'>{data["bodyDiameter"] ? data["bodyDiameter"] : 'Đường kính thân'}</h6>
+                                                <h6 className='font-bold text-lg'>{data["leafLength"] ? data["leafLength"] : 'Tán lá'}</h6>
+                                                <h6 className='font-bold text-lg'>{data["cutTime"] ? data["cutTime"] : 'Thời điểm cắt tỉa gần nhất'}</h6>
+                                                <h6 className='font-bold text-lg'>{data["plantTime"] ? data["plantTime"] : 'Thời điểm trồng'}</h6>
+                                                <h6 className='font-bold text-lg'>{data["note"] ? data["note"] : 'Ghi chú'}</h6>
                                             </div>
                                         </div>
                                     </div>
 
                                 </div>
-                            )
-                        })
-                    }
+
+                            </div>
+                        )
+                    })
+                }
             </div>
             <div className='button-group'>
                 <div className='btn-success'>
@@ -98,16 +96,3 @@ function DetailTree() {
 }
 
 export default DetailTree
-
-// <tr key={index}>
-//     <div className='image-detail'>
-//         <div className='padding' >
-//             <img src="" alt='img' />
-//         </div>
-//     </div>
-//     <div className='detail'>
-//         <p>Hello</p>
-//     </div>
-//     <Button variant="success">{detailTitle[property]}</Button>
-//     <Button variant="success">{data[property]}</Button>
-// </tr>
